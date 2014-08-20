@@ -82,10 +82,12 @@ class Managed_Links {
 		dbDelta( $sql );
 		
 		add_option( 'managed_links_db_version', self::DB_VERSION );
+		
+		add_option( 'managed_links_default_target', '_self' );
 	}
 
 	public static function deactivate() {
-		
+		delete_option( 'managed_links_default_target' );
 	}
 
 	/**
@@ -181,6 +183,8 @@ class Managed_Links {
 			'type'     => '',
 			'title'    => 'le fichier',
 		), $atts );
+
+		$target = get_option( 'managed_links_default_target' );
 	
 		$url = esc_sql( $content );
 		$link = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}managed_links ml WHERE ml.url = '$url'");
@@ -213,7 +217,7 @@ class Managed_Links {
 		}
 	
 		$url = esc_url( home_url( '/?pagename=download_link&link_id=' . intval($link_id)) );
-		return '<a class="button" href="' . $url . '">Télécharger ' . $atts['title'] . '</a>';
+		return '<a class="button" href="' . $url . '" target="' . esc_attr($target) . '">Télécharger ' . $atts['title'] . '</a>';
 	}
 
 	public function display() {
