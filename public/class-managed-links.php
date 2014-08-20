@@ -133,8 +133,20 @@ class Managed_Links {
 			'with_category' => null,
 			'with_type'     => null,
 		), $atts );
+		
+		$where_conditions = array('1');
 
-		$links = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}managed_links ml order by ml.category asc, ml.number asc, ml.type asc", OBJECT );
+		if( $atts['with_category'] != null ) {
+			$where_conditions[] = 'ml.category = \'' . esc_sql($atts['with_category']) . '\'';
+		}
+
+		if( $atts['with_type'] != null ) {
+			$where_conditions[] = 'ml.category = \'' . esc_sql($atts['with_category']) . '\'';
+		}
+		
+		$where_condition = implode(' AND ', $where_conditions);
+
+		$links = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}managed_links ml WHERE $where_condition ORDER BY ml.category asc, ml.number asc, ml.type asc", OBJECT );
 
 		$results = array();
 		$html = '';
