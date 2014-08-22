@@ -34,8 +34,8 @@ class Managed_Links {
 		add_filter('query_vars', array( $this, 'query_vars' ) );
 		add_filter('template_redirect', array( $this, 'display' ) );
 
-		add_shortcode( 'managed_link', array( $this, 'shortcode' ) );
-		add_shortcode( 'list_links', array( $this, 'list_links' ) );
+		add_shortcode( 'managed_link', array( $this, 'managed_link_shortcode' ) );
+		add_shortcode( 'list_links', array( $this, 'list_links_shortcode' ) );
 	}
 
 	public function get_plugin_slug() {
@@ -128,7 +128,7 @@ class Managed_Links {
 		return $vars;
 	}
 
-	public function list_links( $atts ) {
+	public function list_links_shortcode( $atts ) {
 		global $wpdb;
 
 		$atts = shortcode_atts( array(
@@ -174,7 +174,7 @@ class Managed_Links {
 		return $html;
 	}
 
-	public function shortcode( $atts, $content = null ) {
+	public function managed_link_shortcode( $atts, $content = null ) {
 		global $wpdb;
 	
 		$atts = shortcode_atts( array(
